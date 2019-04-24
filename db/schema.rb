@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_051057) do
+ActiveRecord::Schema.define(version: 2019_04_24_062202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "artist_appearances", force: :cascade do |t|
+    t.bigint "artist_watch_id", null: false
+    t.string "name", null: false
+    t.string "oh_my_rockness_show_id", null: false
+    t.string "oh_my_rockness_band_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artist_watch_id", "oh_my_rockness_show_id", "oh_my_rockness_band_id"], name: "index_artist_appearances_on_ids", unique: true
+    t.index ["artist_watch_id"], name: "index_artist_appearances_on_artist_watch_id"
+    t.index ["oh_my_rockness_band_id"], name: "index_artist_appearances_on_oh_my_rockness_band_id"
+    t.index ["oh_my_rockness_show_id"], name: "index_artist_appearances_on_oh_my_rockness_show_id"
+  end
 
   create_table "artist_watch_song_watches", force: :cascade do |t|
     t.bigint "artist_watch_id", null: false
@@ -84,6 +97,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_051057) do
     t.index ["spotify_uid"], name: "index_subscribers_on_spotify_uid", unique: true
   end
 
+  add_foreign_key "artist_appearances", "artist_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "artist_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "song_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "playlist_watches", "subscribers", on_update: :cascade, on_delete: :cascade

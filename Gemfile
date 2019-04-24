@@ -8,6 +8,7 @@ gem "bootstrap", "~> 4.3", ">= 4.3.1"
 gem "bootstrap_form", "~> 4.2"
 gem 'delayed_job_active_record', '~> 4.1', '>= 4.1.3'
 gem 'devise', '~> 4.6', '>= 4.6.2'
+gem 'her', '~> 1.1'
 gem 'jbuilder', '~> 2.5'
 gem 'omniauth', '~> 1.9'
 gem 'omniauth-spotify', '~> 0.0.13'
