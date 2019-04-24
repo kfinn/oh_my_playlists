@@ -11,7 +11,11 @@
 
     <nav class="navbar navbar-light bg-light">
       <%= link_to "OhMyPlaylists", home_path, class: "navbar-brand" %>
-      <%# <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "nav-link" %>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <%= link_to "Artist appearances", artist_appearances_path, class: "nav-link" %>
+        </li>
+      </ul>
     </nav>
     <p class="alert alert-primary" role="alert"><%= notice %></p>
     <p class="alert alert-danger" role="alert"><%= alert %></p>
