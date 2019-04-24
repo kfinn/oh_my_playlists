@@ -7,6 +7,10 @@ class SongWatch < ApplicationRecord
 
   delegate :name, to: :track
 
+  def spotify_track_url
+    track.external_urls['spotify']
+  end
+
   private
 
   def track

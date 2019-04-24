@@ -8,7 +8,10 @@
     <br />
     <ul>
     <%- artist_appearance.song_watches.merge(@song_watches).each do |song_watch| %>
-      <li><%= song_watch.name %> on <%= song_watch.playlist_watch.name %></li>
+      <li>
+      <%= link_to song_watch.name, song_watch.spotify_track_url %>
+      on
+      <%= link_to song_watch.playlist_watch.name, song_watch.playlist_watch.spotify_playlist_url %></li>
     <%- end %>
     </ul>
   </l>

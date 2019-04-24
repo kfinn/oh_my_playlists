@@ -16,11 +16,15 @@ class PlaylistWatch < ApplicationRecord
     errors[:spotify_playlist_id] << 'must match a spotfy playlist'
   end
 
-  def playlist
-    @playlist ||= RSpotify::Playlist.find_by_id(spotify_playlist_id)
+  def spotify_playlist_url
+    playlist.external_urls['spotify']
   end
 
   private
+
+  def playlist
+    @playlist ||= RSpotify::Playlist.find_by_id(spotify_playlist_id)
+  end
 
   def generate_song_watches
     generated_song_watches = playlist.tracks.map do |track|

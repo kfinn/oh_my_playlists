@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_062202) do
+ActiveRecord::Schema.define(version: 2019_04_24_072440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,10 +23,12 @@ ActiveRecord::Schema.define(version: 2019_04_24_062202) do
     t.string "oh_my_rockness_band_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "oh_my_rockness_sync_id", null: false
     t.index ["artist_watch_id", "oh_my_rockness_show_id", "oh_my_rockness_band_id"], name: "index_artist_appearances_on_ids", unique: true
     t.index ["artist_watch_id"], name: "index_artist_appearances_on_artist_watch_id"
     t.index ["oh_my_rockness_band_id"], name: "index_artist_appearances_on_oh_my_rockness_band_id"
     t.index ["oh_my_rockness_show_id"], name: "index_artist_appearances_on_oh_my_rockness_show_id"
+    t.index ["oh_my_rockness_sync_id"], name: "index_artist_appearances_on_oh_my_rockness_sync_id"
   end
 
   create_table "artist_watch_song_watches", force: :cascade do |t|
@@ -60,6 +62,11 @@ ActiveRecord::Schema.define(version: 2019_04_24_062202) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "oh_my_rockness_syncs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "playlist_watches", force: :cascade do |t|
@@ -99,6 +106,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_062202) do
   end
 
   add_foreign_key "artist_appearances", "artist_watches", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "artist_appearances", "oh_my_rockness_syncs", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "artist_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "song_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "playlist_watches", "subscribers", on_update: :cascade, on_delete: :cascade
