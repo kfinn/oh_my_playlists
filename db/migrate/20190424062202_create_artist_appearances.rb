@@ -3,6 +3,7 @@ class CreateArtistAppearances < ActiveRecord::Migration[5.2]
     create_table :artist_appearances do |t|
       t.references :artist_watch, foreign_key: { on_delete: :cascade, on_update: :cascade }, null: false
       t.string :name, null: false
+      t.datetime :starting_at, null: false
       t.string :oh_my_rockness_show_id, index: true, null: false
       t.string :oh_my_rockness_band_id, index: true, null: false
 

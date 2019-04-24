@@ -1,0 +1,8 @@
+<h1>Artist appearances</h1>
+<ul>
+<%- @artist_appearances.each do |artist_appearance| %>
+  <li>
+    <%= artist_appearance.name %>
+    <%= link_to artist_appearance.show.summary, artist_appearance.show.url %>
+  </l>
+<%- end %>

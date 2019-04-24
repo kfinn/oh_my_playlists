@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_062202) do
   create_table "artist_appearances", force: :cascade do |t|
     t.bigint "artist_watch_id", null: false
     t.string "name", null: false
+    t.datetime "starting_at", null: false
     t.string "oh_my_rockness_show_id", null: false
     t.string "oh_my_rockness_band_id", null: false
     t.datetime "created_at", null: false

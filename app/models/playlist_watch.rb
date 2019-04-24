@@ -1,6 +1,8 @@
 class PlaylistWatch < ApplicationRecord
   belongs_to :subscriber
   has_many :song_watches, inverse_of: :playlist_watch
+  has_many :artist_watches, through: :song_watches
+  has_many :artist_appearances, through: :artist_watches
 
   delegate :name, to: :playlist
 

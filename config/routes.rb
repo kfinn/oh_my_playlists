@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   resources :playlists, only: :index do
     resources :playlist_watches, only: :create
   end
+
+  resources :artist_appearances, only: :index
 end
