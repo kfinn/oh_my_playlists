@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_23_174440) do
+ActiveRecord::Schema.define(version: 2019_04_23_183003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "playlist_watches", force: :cascade do |t|
+    t.bigint "subscriber_id"
+    t.string "spotify_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["spotify_id"], name: "index_playlist_watches_on_spotify_id", unique: true
+    t.index ["subscriber_id"], name: "index_playlist_watches_on_subscriber_id"
+  end
 
   create_table "subscribers", force: :cascade do |t|
     t.string "spotify_uid", null: false
@@ -32,4 +41,5 @@ ActiveRecord::Schema.define(version: 2019_04_23_174440) do
     t.index ["email"], name: "index_subscribers_on_email", unique: true
   end
 
+  add_foreign_key "playlist_watches", "subscribers", on_update: :cascade, on_delete: :cascade
 end
