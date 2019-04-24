@@ -22,5 +22,6 @@ class DeviseCreateSubscribers < ActiveRecord::Migration[5.2]
     end
 
     add_index :subscribers, :email, unique: true
+    add_index :subscribers, :spotify_uid, unique: true
   end
 end

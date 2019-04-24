@@ -10,18 +10,60 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_23_183003) do
+ActiveRecord::Schema.define(version: 2019_04_24_051057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "playlist_watches", force: :cascade do |t|
-    t.bigint "subscriber_id"
-    t.string "spotify_id"
+  create_table "artist_watch_song_watches", force: :cascade do |t|
+    t.bigint "artist_watch_id", null: false
+    t.bigint "song_watch_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["spotify_id"], name: "index_playlist_watches_on_spotify_id", unique: true
+    t.index ["artist_watch_id", "song_watch_id"], name: "index_awsws_on_ids", unique: true
+    t.index ["artist_watch_id"], name: "index_artist_watch_song_watches_on_artist_watch_id"
+    t.index ["song_watch_id"], name: "index_artist_watch_song_watches_on_song_watch_id"
+  end
+
+  create_table "artist_watches", force: :cascade do |t|
+    t.string "spotify_artist_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["spotify_artist_id"], name: "index_artist_watches_on_spotify_artist_id", unique: true
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "playlist_watches", force: :cascade do |t|
+    t.bigint "subscriber_id", null: false
+    t.string "spotify_playlist_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["spotify_playlist_id"], name: "index_playlist_watches_on_spotify_playlist_id", unique: true
     t.index ["subscriber_id"], name: "index_playlist_watches_on_subscriber_id"
+  end
+
+  create_table "song_watches", force: :cascade do |t|
+    t.bigint "playlist_watch_id", null: false
+    t.string "spotify_track_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_watch_id", "spotify_track_id"], name: "index_song_watches_on_playlist_watch_id_and_spotify_track_id", unique: true
+    t.index ["playlist_watch_id"], name: "index_song_watches_on_playlist_watch_id"
   end
 
   create_table "subscribers", force: :cascade do |t|
@@ -39,7 +81,11 @@ ActiveRecord::Schema.define(version: 2019_04_23_183003) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_subscribers_on_email", unique: true
+    t.index ["spotify_uid"], name: "index_subscribers_on_spotify_uid", unique: true
   end
 
+  add_foreign_key "artist_watch_song_watches", "artist_watches", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "artist_watch_song_watches", "song_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "playlist_watches", "subscribers", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "song_watches", "playlist_watches", on_update: :cascade, on_delete: :cascade
 end
