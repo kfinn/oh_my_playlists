@@ -5,6 +5,8 @@ class SongWatch < ApplicationRecord
 
   after_create -> { delay.generate_artist_watches }
 
+  delegate :name, to: :track
+
   private
 
   def track

@@ -3,7 +3,8 @@ class Subscriber < ApplicationRecord
 
   validates :spotify_uid, :email, :spotify_credential_token, :spotify_credential_refresh_token, :spotify_credential_expires_at, :spotify_credential_expires, presence: true
 
-  has_many :playlist_watches
+  has_many :playlist_watches, inverse_of: :subscriber
+  has_many :song_watches, through: :playlist_watches
   has_many :artist_appearances, through: :playlist_watches
 
   class << self

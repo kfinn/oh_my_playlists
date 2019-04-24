@@ -3,6 +3,13 @@
 <%- @artist_appearances.each do |artist_appearance| %>
   <li>
     <%= artist_appearance.name %>
+    <br />
     <%= link_to artist_appearance.show.summary, artist_appearance.show.url %>
+    <br />
+    <ul>
+    <%- artist_appearance.song_watches.merge(@song_watches).each do |song_watch| %>
+      <li><%= song_watch.name %> on <%= song_watch.playlist_watch.name %></li>
+    <%- end %>
+    </ul>
   </l>
 <%- end %>
