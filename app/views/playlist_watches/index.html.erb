@@ -1,0 +1,14 @@
+<h1>Playlist watches</h1>
+<ul>
+<%- @playlist_watches.each do |playlist_watch| %>
+  <li>
+    <%= link_to playlist_watch.name, playlist_watch.spotify_playlist_url %>
+    <br />
+    <%= playlist_watch.summary %>
+    <br />
+    Last updated: <%= playlist_watch.playlist_snapshot.created_at %>
+    <br />
+    <%= link_to "Update snapshot", playlist_watch_playlist_snapshots_path(playlist_watch), method: :post %>
+  </li>
+<%- end %>
+</ul>

@@ -1,7 +1,7 @@
 class PlaylistWatch < ApplicationRecord
   belongs_to :subscriber
   has_many :song_watches, inverse_of: :playlist_watch
-  has_many :artist_watches, through: :song_watches
+  has_many :artist_watches, -> { distinct }, through: :song_watches
   has_many :artist_appearances, through: :artist_watches
 
   has_many :playlist_snapshots, inverse_of: :playlist_watch
@@ -25,6 +25,17 @@ class PlaylistWatch < ApplicationRecord
 
   def playlist_snapshot_completed!
     delay.update_song_watches_from_completed_playlist_snapshot!
+  end
+
+  def summary
+    if artist_watches.empty?
+      'no artists'
+    elsif artist_watches.size <= 5
+      artist_watches.map(&:name).to_sentence
+    else
+      first_artist_watch_names = artist_watches.first(5).map(&:name)
+      (first_artist_watch_names + ["#{artist_watches.size - 5} more..."]).to_sentence
+    end
   end
 
   private
