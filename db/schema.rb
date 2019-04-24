@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_072440) do
+ActiveRecord::Schema.define(version: 2019_04_24_202743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,11 +69,40 @@ ActiveRecord::Schema.define(version: 2019_04_24_072440) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "playlist_snapshot_pages", force: :cascade do |t|
+    t.bigint "playlist_snapshot_id", null: false
+    t.integer "offset", default: 0, null: false
+    t.integer "limit", default: 100, null: false
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_snapshot_id", "offset", "limit"], name: "index_psps_on_ids_offset_limit", unique: true
+    t.index ["playlist_snapshot_id"], name: "index_playlist_snapshot_pages_on_playlist_snapshot_id"
+  end
+
+  create_table "playlist_snapshot_tracks", force: :cascade do |t|
+    t.bigint "playlist_snapshot_page_id", null: false
+    t.string "spotify_track_id", null: false
+    t.integer "order", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_snapshot_page_id"], name: "index_playlist_snapshot_tracks_on_playlist_snapshot_page_id"
+  end
+
+  create_table "playlist_snapshots", force: :cascade do |t|
+    t.bigint "playlist_watch_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_watch_id"], name: "index_playlist_snapshots_on_playlist_watch_id"
+  end
+
   create_table "playlist_watches", force: :cascade do |t|
     t.bigint "subscriber_id", null: false
     t.string "spotify_playlist_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "playlist_snapshot_id"
+    t.index ["playlist_snapshot_id"], name: "index_playlist_watches_on_playlist_snapshot_id"
     t.index ["spotify_playlist_id"], name: "index_playlist_watches_on_spotify_playlist_id", unique: true
     t.index ["subscriber_id"], name: "index_playlist_watches_on_subscriber_id"
   end
@@ -109,6 +138,10 @@ ActiveRecord::Schema.define(version: 2019_04_24_072440) do
   add_foreign_key "artist_appearances", "oh_my_rockness_syncs", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "artist_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "song_watches", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "playlist_snapshot_pages", "playlist_snapshots", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "playlist_snapshot_tracks", "playlist_snapshot_pages", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "playlist_snapshots", "playlist_watches", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "playlist_watches", "playlist_snapshots", on_update: :cascade, on_delete: :nullify
   add_foreign_key "playlist_watches", "subscribers", on_update: :cascade, on_delete: :cascade
   add_foreign_key "song_watches", "playlist_watches", on_update: :cascade, on_delete: :cascade
 end
