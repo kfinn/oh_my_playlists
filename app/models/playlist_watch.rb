@@ -5,7 +5,7 @@ class PlaylistWatch < ApplicationRecord
   has_many :artist_appearances, through: :artist_watches
 
   has_many :playlist_snapshots, inverse_of: :playlist_watch
-  belongs_to :playlist_snapshot
+  belongs_to :playlist_snapshot, optional: true
 
   delegate :name, :tracks, to: :playlist
 
@@ -38,14 +38,14 @@ class PlaylistWatch < ApplicationRecord
     end
   end
 
+  def refresh_song_watches!
+    playlist_snapshots.create!
+  end
+
   private
 
   def playlist
     @playlist ||= RSpotify::Playlist.find_by_id(spotify_playlist_id)
-  end
-
-  def refresh_song_watches!
-    playlist_snapshots.create!
   end
 
   def update_song_watches_from_completed_playlist_snapshot!

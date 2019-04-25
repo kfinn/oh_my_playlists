@@ -6,7 +6,7 @@
     <br />
     <%= playlist_watch.summary %>
     <br />
-    Last updated: <%= playlist_watch.playlist_snapshot.created_at %>
+    Last updated: <%= playlist_watch.playlist_snapshot&.created_at || 'never' %>
     <br />
     <%= link_to "Update snapshot", playlist_watch_playlist_snapshots_path(playlist_watch), method: :post %>
   </li>

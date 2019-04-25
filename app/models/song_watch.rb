@@ -11,6 +11,11 @@ class SongWatch < ApplicationRecord
     track.external_urls['spotify']
   end
 
+  def spotify_artist_url_for_appearance(artist_appearance)
+    spotify_artist = track.artists.find { |a| a.id == artist_appearance.artist_watch.spotify_artist_id }
+    spotify_artist.external_urls['spotify']
+  end
+
   private
 
   def track

@@ -1,9 +1,17 @@
 <h1>Playlists</h1>
-<ul>
 <%- @playlists.each do |playlist| %>
-  <li>
-    <%= playlist.name %>
-    <%= link_to "Watch", playlist_playlist_watches_path(playlist.id), method: :post %>
-  </li>
+  <div class="card card-list-item">
+    <div class="card-body">
+      <h5 class="card-title">
+        <%= link_to playlist.name, playlist.external_urls['spotify'] %>
+      </h5>
+      <div class="card-text">
+        <%- if @watched_spotify_playlist_ids.include? playlist.id %>
+          <%= link_to 'Watching', '#', class: 'btn btn-primary btn-sm disabled', role: 'button' %>
+        <%- else %>
+          <%= link_to "Watch", playlist_playlist_watches_path(playlist.id), method: :post, class: 'btn btn-primary btn-sm', role: 'button' %>
+        <%- end %>
+      </div>
+    </div>
+  </div>
 <%- end %>
-</ul>

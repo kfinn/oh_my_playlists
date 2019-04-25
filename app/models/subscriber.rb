@@ -31,6 +31,10 @@ class Subscriber < ApplicationRecord
     @playlists ||= spotify_user.playlists(limit: 50)
   end
 
+  def watched_spotify_playlist_ids
+    @watched_spotify_playlist_ids ||= Set.new(playlist_watches.map(&:spotify_playlist_id))
+  end
+
   def spotify_user
     @spotify_user ||= RSpotify::User.new to_rspotify_params
   end
