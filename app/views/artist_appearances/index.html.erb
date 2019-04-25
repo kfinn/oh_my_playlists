@@ -1,7 +1,7 @@
 <h1>Artist appearances</h1>
 <div>
   <%= link_to 'Sync now', oh_my_rockness_syncs_path, method: :post, class: 'btn btn-secondary btn-sm', role: 'button' %>
-  Last synced at <%= @latest_oh_my_rockness_sync.created_at %>
+  Last synced at <%= @latest_oh_my_rockness_sync&.created_at || never %>
 </div>
 <br />
 <%- @artist_appearances.each do |artist_appearance| %>
