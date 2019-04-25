@@ -3,6 +3,10 @@ class OhMyRocknessSync < ApplicationRecord
 
   has_many :artist_appearances, inverse_of: :oh_my_rockness_sync
 
+  def self.latest
+    order(created_at: :desc).first
+  end
+
   def sync!
     Show.just_announced.in_new_york.each do |show|
       show.cached_bands.each do |cached_band|

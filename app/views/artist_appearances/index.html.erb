@@ -1,18 +1,25 @@
 <h1>Artist appearances</h1>
+<div>
+  Last synced at <%= @latest_oh_my_rockness_sync.created_at %>
+</div>
+<div>
+  <%= link_to 'Sync now', oh_my_rockness_syncs_path, method: :post %>
+</div>
 <ul>
-<%- @artist_appearances.each do |artist_appearance| %>
-  <li>
-    <%= artist_appearance.name %>
-    <br />
-    <%= link_to artist_appearance.show.summary, artist_appearance.show.url %>
-    <br />
-    <ul>
-    <%- artist_appearance.song_watches.merge(@song_watches).each do |song_watch| %>
-      <li>
-      <%= link_to song_watch.name, song_watch.spotify_track_url %>
-      on
-      <%= link_to song_watch.playlist_watch.name, song_watch.playlist_watch.spotify_playlist_url %></li>
-    <%- end %>
-    </ul>
-  </l>
-<%- end %>
+  <%- @artist_appearances.each do |artist_appearance| %>
+    <li>
+      <%= artist_appearance.name %>
+      <br />
+      <%= link_to artist_appearance.show.summary, artist_appearance.show.url %>
+      <br />
+      <ul>
+      <%- artist_appearance.song_watches.merge(@song_watches).each do |song_watch| %>
+        <li>
+        <%= link_to song_watch.name, song_watch.spotify_track_url %>
+        on
+        <%= link_to song_watch.playlist_watch.name, song_watch.playlist_watch.spotify_playlist_url %></li>
+      <%- end %>
+      </ul>
+    </l>
+  <%- end %>
+</ul>

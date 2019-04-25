@@ -11,4 +11,5 @@ Rails.application.routes.draw do
     resources :playlist_snapshots, only: :create
   end
   resources :artist_appearances, only: :index
+  resources :oh_my_rockness_syncs, only: :create
 end
