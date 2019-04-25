@@ -1,1 +1,4 @@
-RSpotify.authenticate(Rails.application.credentials.spotify_client_id, Rails.application.credentials.spotify_client_secret)
+RSpotify.authenticate(
+  Rails.application.config.spotify_client_id,
+  Rails.application.config.spotify_client_secret
+)
