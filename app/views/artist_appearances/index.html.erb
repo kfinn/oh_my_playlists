@@ -1,6 +1,7 @@
 <h1>Artist appearances</h1>
 <div>
-  Last synced at <%= @latest_oh_my_rockness_sync.created_at %>. <%= link_to 'Sync now', oh_my_rockness_syncs_path, method: :post %>
+  <%= link_to 'Sync now', oh_my_rockness_syncs_path, method: :post, class: 'btn btn-secondary btn-sm', role: 'button' %>
+  Last synced at <%= @latest_oh_my_rockness_sync.created_at %>
 </div>
 <br />
 <%- @artist_appearances.each do |artist_appearance| %>
@@ -9,17 +10,15 @@
       <h5 class="card-title">
         <%= link_to artist_appearance.show.summary, artist_appearance.show.url %>
       </h5>
-    </div>
-    <ul class="list-group list-group-flush">
       <%- @song_watches.merge(artist_appearance.song_watches).each do |song_watch| %>
-        <li class="list-group-item">
+        <div>
           <%= link_to song_watch.name, song_watch.spotify_track_url %>
           by
           <%= link_to artist_appearance.name, song_watch.spotify_artist_url_for_appearance(artist_appearance) %>
           on
           <%= link_to song_watch.playlist_watch.name, song_watch.playlist_watch.spotify_playlist_url %>
-        </li>
+        </div>
       <%- end %>
-    </ul>
+    </div>
   </div>
 <%- end %>

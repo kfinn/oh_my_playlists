@@ -7,9 +7,9 @@
       </h5>
       <div class="card-text">
         <%- if @watched_spotify_playlist_ids.include? playlist.id %>
-          <%= link_to 'Watching', '#', class: 'btn btn-primary btn-sm disabled', role: 'button' %>
+          <%= link_to 'Watching', '#', class: 'btn btn-secondary btn-sm disabled', role: 'button' %>
         <%- else %>
-          <%= link_to "Watch", playlist_playlist_watches_path(playlist.id), method: :post, class: 'btn btn-primary btn-sm', role: 'button' %>
+          <%= link_to "Watch", playlist_playlist_watches_path(playlist.id), method: :post, class: 'btn btn-secondary btn-sm', role: 'button' %>
         <%- end %>
       </div>
     </div>
