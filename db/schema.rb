@@ -10,25 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_202743) do
+ActiveRecord::Schema.define(version: 2019_04_26_053343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "artist_appearances", force: :cascade do |t|
     t.bigint "artist_watch_id", null: false
-    t.string "name", null: false
-    t.datetime "starting_at", null: false
-    t.string "oh_my_rockness_show_id", null: false
-    t.string "oh_my_rockness_band_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "oh_my_rockness_sync_id", null: false
-    t.index ["artist_watch_id", "oh_my_rockness_show_id", "oh_my_rockness_band_id"], name: "index_artist_appearances_on_ids", unique: true
+    t.bigint "show_snapshot_band_id", null: false
     t.index ["artist_watch_id"], name: "index_artist_appearances_on_artist_watch_id"
-    t.index ["oh_my_rockness_band_id"], name: "index_artist_appearances_on_oh_my_rockness_band_id"
-    t.index ["oh_my_rockness_show_id"], name: "index_artist_appearances_on_oh_my_rockness_show_id"
-    t.index ["oh_my_rockness_sync_id"], name: "index_artist_appearances_on_oh_my_rockness_sync_id"
+    t.index ["show_snapshot_band_id"], name: "index_artist_appearances_on_show_snapshot_band_id"
   end
 
   create_table "artist_watch_song_watches", force: :cascade do |t|
@@ -107,6 +100,26 @@ ActiveRecord::Schema.define(version: 2019_04_24_202743) do
     t.index ["subscriber_id"], name: "index_playlist_watches_on_subscriber_id"
   end
 
+  create_table "show_snapshot_bands", force: :cascade do |t|
+    t.bigint "show_snapshot_id"
+    t.string "oh_my_rockness_band_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_show_snapshot_bands_on_name"
+    t.index ["oh_my_rockness_band_id"], name: "index_show_snapshot_bands_on_oh_my_rockness_band_id"
+    t.index ["show_snapshot_id"], name: "index_show_snapshot_bands_on_show_snapshot_id"
+  end
+
+  create_table "show_snapshots", force: :cascade do |t|
+    t.string "oh_my_rockness_show_id", null: false
+    t.datetime "starting_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["oh_my_rockness_show_id"], name: "index_show_snapshots_on_oh_my_rockness_show_id"
+    t.index ["starting_at"], name: "index_show_snapshots_on_starting_at"
+  end
+
   create_table "song_watches", force: :cascade do |t|
     t.bigint "playlist_watch_id", null: false
     t.string "spotify_track_id", null: false
@@ -135,7 +148,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_202743) do
   end
 
   add_foreign_key "artist_appearances", "artist_watches", on_update: :cascade, on_delete: :cascade
-  add_foreign_key "artist_appearances", "oh_my_rockness_syncs", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "artist_appearances", "show_snapshot_bands", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "artist_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "artist_watch_song_watches", "song_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "playlist_snapshot_pages", "playlist_snapshots", on_update: :cascade, on_delete: :cascade
@@ -143,5 +156,6 @@ ActiveRecord::Schema.define(version: 2019_04_24_202743) do
   add_foreign_key "playlist_snapshots", "playlist_watches", on_update: :cascade, on_delete: :cascade
   add_foreign_key "playlist_watches", "playlist_snapshots", on_update: :cascade, on_delete: :nullify
   add_foreign_key "playlist_watches", "subscribers", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "show_snapshot_bands", "show_snapshots", on_update: :cascade, on_delete: :cascade
   add_foreign_key "song_watches", "playlist_watches", on_update: :cascade, on_delete: :cascade
 end

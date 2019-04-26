@@ -1,12 +1,11 @@
 class ArtistAppearance < ApplicationRecord
-  belongs_to :oh_my_rockness_sync
   belongs_to :artist_watch
   has_many :song_watches, through: :artist_watch
-
-  def show
-    @show ||= Show.find(oh_my_rockness_show_id)
-  end
+  belongs_to :show_snapshot_band
+  has_one :show_snapshot, through: :show_snapshot_band
+  delegate :show, to: :show_snapshot
+  delegate :name, to: :show_snapshot_band
 
   scope :upcoming, -> { where('starting_at > ?', Time.zone.now) }
-  scope :by_date, -> { order(starting_at: :asc) }
+  scope :by_date, -> { joins(:show_snapshot).merge(ShowSnapshot.by_date) }
 end
